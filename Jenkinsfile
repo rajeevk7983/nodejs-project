@@ -1,11 +1,15 @@
-node {
-    checkout scm
+    node {
+    def app
 
-    docker.withRegistry('https://registry.hub.docker.com/', 'docker-login1') {
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
 
-        def customImage = docker.build("rajeevk7983/nodejs-project")
-
-        /* Push the container to the custom Registry */
-        customImage.push()
+        checkout scm
     }
-}
+
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("rajeevk7983/nodejs-project")
+    }
